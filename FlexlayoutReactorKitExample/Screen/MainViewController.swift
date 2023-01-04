@@ -8,7 +8,7 @@
 import UIKit
 import FlexLayout
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     // MARK: UI
     private var mainView: MainView {
         return self.view as! MainView
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     // MARK: Methods
 }
 
-extension ViewController {
+extension MainViewController {
     
     // emmit dummy data
     private func loadShows() -> [Show] {
