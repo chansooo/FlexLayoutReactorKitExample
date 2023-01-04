@@ -70,11 +70,7 @@ final class MainView: UIView {
         let episodeTabView = showTabBarFor(text: "EPISODES", selected: true)
         let moreTabView = showTabBarFor(text: "MORE LIKE THIS", selected: false)
         
-        // Shows List
-        showsTableView.delegate = self
-        showsTableView.dataSource = self
-        showsTableView.backgroundColor = self.backgroundColor
-        showsTableView.register(ShowTableViewCell.self, forCellReuseIdentifier: ShowTableViewCell.reuseIdentifier)
+
         
         rootFlexContainer.flex.define { flex in
             // Image
@@ -217,23 +213,3 @@ extension MainView {
     }
 }
 
-// MARK: - UITableViewDataSource methods
-extension MainView: UITableViewDataSource, UITableViewDelegate {
-    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return series.shows.count
-    }
-    
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ShowTableViewCell.reuseIdentifier, for: indexPath) as! ShowTableViewCell
-        cell.configure(show: series.shows[indexPath.row])
-        return cell
-    }
-    
-    internal func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectShow(show: series.shows[indexPath.row])
-    }
-}
