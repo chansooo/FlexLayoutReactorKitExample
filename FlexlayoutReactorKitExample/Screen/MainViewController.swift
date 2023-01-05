@@ -77,24 +77,3 @@ final class MainViewController: UIViewController, View {
             .disposed(by: disposeBag)
     }
 }
-//
-//// MARK: - UITableViewDataSource methods
-//extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return series.shows.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: ShowTableViewCell.reuseIdentifier, for: indexPath) as! ShowTableViewCell
-//        cell.configure(show: series.shows[indexPath.row])
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        didSelectShow(show: series.shows[indexPath.row])
-//    }
-//}

@@ -50,7 +50,9 @@ final class MainReactor: Reactor {
                 Observable.just(Mutation.setSelectedItem(title: show.title))
             ])
         case .viewDidLoad:
-            return self.fetchShows()
+            return Observable.concat([
+                self.fetchShows()
+            ])
         }
     }
     
