@@ -10,12 +10,15 @@ import Foundation
 import RxSwift
 
 protocol FetchShowRepository {
+    
     func execute() -> Single<[Show]>
 }
 
 final class FetchShowRepositoryImpl: FetchShowRepository {
+    
     // emmit dummy data
     func execute() -> Single<[Show]> {
+        
         return Single.create { single in
             guard let path = Bundle.main.path(forResource: "Shows", ofType: "plist"),
                   let dictArray = NSArray(contentsOfFile: path) as? [[String: AnyObject]] else {
