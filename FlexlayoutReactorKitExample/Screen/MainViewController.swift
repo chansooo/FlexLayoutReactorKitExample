@@ -33,8 +33,6 @@ final class MainViewController: UIViewController, View {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.mainView.showsTableView.delegate = self
-//        self.mainView.showsTableView.dataSource = self
         self.mainView.showsTableView.backgroundColor = self.mainView.backgroundColor
         self.mainView.showsTableView.register(ShowTableViewCell.self, forCellReuseIdentifier: ShowTableViewCell.reuseIdentifier)
     }
@@ -44,36 +42,41 @@ final class MainViewController: UIViewController, View {
         let series = Series(shows: shows)
         self.view = MainView(series: series)
     }
-    
+
     private func bindAction(_ reactor: MainReactor) {
         self.mainView.showsTableView.rx.modelSelected(Show.self)
             .asObservable()
             .map { Reactor.Action.tableDidTab($0)}
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+
         Observable.just(Void())
             .map { Reactor.Action.viewDidLoad }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }
-    
+
     private func bindState(_ reactor: MainReactor) {
-        
+
         reactor.state
             .map { $0.shows }
-            .bind(to: self.mainView.showsTableView.rx.items(cellIdentifier: ShowTableViewCell.reuseIdentifier)) { index, model, cell in
-                guard let cell = cell as? ShowTableViewCell else { return }
+            .debug()
+            .bind(to: self.mainView.showsTableView.rx.items(cellIdentifier: ShowTableViewCell.reuseIdentifier, cellType: ShowTableViewCell.self)) { index, model, cell in
                 cell.configure(show: model)
             }
             .disposed(by: disposeBag)
-        
+
         reactor.state
-            .map { $0.selectedTitle }
-            .subscribe { [weak self] title in
+            .map { $0.selectedShow }
+            .skip(1)
+            .subscribe(onNext: { show in
+                let title = show.title
+                print(title)
                 let alert = UIAlertController(title: title, message: title, preferredStyle: .alert)
-                self?.present(alert, animated: true)
-            }
+                alert.addAction(UIAlertAction(title: "확인", style: .default))
+                self.mainView.didSelectShow(show: show)
+                self.present(alert, animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

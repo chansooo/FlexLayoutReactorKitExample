@@ -20,12 +20,15 @@ final class MainView: UIView {
     let descriptionLabel = UILabel()
     let showsTableView = ExpandedTableView()
     
+    
     // MARK: Properties
     let showSelectedIndex = 0
     let series: Series
     
     // MARK: Initializers
     init(series: Series) {
+//        showsTableView.rowHeight = 100
+        
         self.series = series
         super.init(frame: .zero)
         
@@ -122,8 +125,8 @@ final class MainView: UIView {
         
         addSubview(contentView)
         
-        didSelectShow(show: series.shows[0])
-        showsTableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
+//        didSelectShow(show: series.shows[0])
+//        showsTableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
     }
     
     required init?(coder: NSCoder) {
@@ -195,7 +198,7 @@ extension MainView {
         return tabView
     }
 
-    private func didSelectShow(show: Show) {
+    func didSelectShow(show: Show) {
         // Episode image
         let image = UIImage(named: show.image)
         let imageAspectRatio = (image?.size.width ?? 1.0) / (image?.size.height ?? 1.0)
@@ -212,4 +215,3 @@ extension MainView {
         setNeedsLayout()
     }
 }
-
