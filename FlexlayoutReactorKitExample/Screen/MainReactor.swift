@@ -8,7 +8,7 @@
 import Foundation
 
 import ReactorKit
-import RxSwift
+//import RxSwift
 
 final class MainReactor: Reactor {
     
@@ -21,13 +21,13 @@ final class MainReactor: Reactor {
     // reactor 내부 로직
     enum Mutation {
         case requestShows(shows: [Show])
-        case setSelectedItem(title: String)
+        case setSelectedItem(show: Show)
     }
     
     // 뷰에 보여줄 값
     struct State {
         var shows: [Show]
-        var selectedTitle: String
+        var selectedShow: Show
     }
 
     // MARK: Properties
@@ -36,7 +36,7 @@ final class MainReactor: Reactor {
     
     // MARK: Initializers
     init(fetchShowRepository: FetchShowRepository) {
-        initialState = State(shows: [], selectedTitle: "")
+        initialState = State(shows: [], selectedShow: Show(title: "", length: "", detail: "", image: ""))
         self.fetchShowRepository = fetchShowRepository
     }
     
@@ -47,12 +47,13 @@ final class MainReactor: Reactor {
         switch action {
         case .tableDidTab(let show):
             return Observable.concat([
-                Observable.just(Mutation.setSelectedItem(title: show.title))
+                Observable.just(Mutation.setSelectedItem(show: show))
             ])
         case .viewDidLoad:
             return Observable.concat([
                 self.fetchShows()
             ])
+            .debug()
         }
     }
     
@@ -60,8 +61,8 @@ final class MainReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         var state = state
         switch mutation {
-        case .setSelectedItem(title: let title):
-            state.selectedTitle = title
+        case .setSelectedItem(show: let show):
+            state.selectedShow = show
             return state
         case .requestShows(shows: let shows):
             state.shows = shows
