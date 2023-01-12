@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  MovieListView.swift
 //  flexlayout-test
 //
 //  Created by kimchansoo on 2023/01/02.
@@ -27,8 +27,7 @@ final class MovieListView: UIView {
     
     // MARK: Initializers
     init(series: Series) {
-//        showsTableView.rowHeight = 100
-        
+        print(#function)
         self.series = series
         super.init(frame: .zero)
         
@@ -77,7 +76,7 @@ final class MovieListView: UIView {
         
         rootFlexContainer.flex.define { flex in
             // Image
-            flex.addItem(episodeImageView).grow(1).backgroundColor(.gray)
+            flex.addItem(episodeImageView).grow(1).aspectRatio(1).backgroundColor(.gray)
             
             // Summary row
             flex.addItem().direction(.row).padding(padding).define { flex in
