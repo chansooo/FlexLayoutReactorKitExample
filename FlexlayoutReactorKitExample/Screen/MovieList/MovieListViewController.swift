@@ -13,11 +13,11 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-final class MainViewController: UIViewController, View {
+final class MovieListViewController: UIViewController, View {
     
     // MARK: UI
-    private var mainView: MainView {
-        return self.view as! MainView
+    private var mainView: MovieListView {
+        return self.view as! MovieListView
     }
     
     // MARK: Properties
@@ -26,7 +26,7 @@ final class MainViewController: UIViewController, View {
     // MARK: Initializers
     
     // MARK: Methods
-    func bind(reactor: MainReactor) {
+    func bind(reactor: MovieListReactor) {
         bindAction(reactor)
         bindState(reactor)
     }
@@ -40,10 +40,10 @@ final class MainViewController: UIViewController, View {
     override func loadView() {
         let shows: [Show] = []
         let series = Series(shows: shows)
-        self.view = MainView(series: series)
+        self.view = MovieListView(series: series)
     }
 
-    private func bindAction(_ reactor: MainReactor) {
+    private func bindAction(_ reactor: MovieListReactor) {
         self.mainView.showsTableView.rx.modelSelected(Show.self)
             .asObservable()
             .map { Reactor.Action.tableDidTab($0)}
@@ -56,7 +56,7 @@ final class MainViewController: UIViewController, View {
             .disposed(by: disposeBag)
     }
 
-    private func bindState(_ reactor: MainReactor) {
+    private func bindState(_ reactor: MovieListReactor) {
 
         reactor.state
             .map { $0.shows }

@@ -9,7 +9,7 @@ import UIKit
 import FlexLayout
 import PinLayout
 
-final class MainView: UIView {
+final class MovieListView: UIView {
     // MARK: UI
     private let contentView = UIScrollView()
     private let rootFlexContainer = UIView()
@@ -150,7 +150,7 @@ final class MainView: UIView {
     }
 }
 
-extension MainView {
+extension MovieListView {
     
     private func showLabelFor(text: String? = nil, font: UIFont = .systemFont(ofSize: 14.0)) -> UILabel {
         let label = UILabel(frame: .zero)

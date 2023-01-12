@@ -8,9 +8,10 @@
 import Foundation
 
 import ReactorKit
-import RxSwift
+import RxCocoa
+import RxFlow
 
-final class MainReactor: Reactor {
+final class MovieListReactor: Reactor, Stepper {
     
     // 뷰에서 어떤 action이 일어났는지
     enum Action {
@@ -33,6 +34,8 @@ final class MainReactor: Reactor {
     // MARK: Properties
     var initialState: State
     private let fetchShowRepository: FetchShowRepository
+    
+    var steps: PublishRelay<Step>
     
     // MARK: Initializers
     init(fetchShowRepository: FetchShowRepository) {
@@ -71,7 +74,7 @@ final class MainReactor: Reactor {
     }
 }
 
-extension MainReactor {
+extension MovieListReactor {
     
     func fetchShows() -> Observable<Mutation> {
         return fetchShowRepository
