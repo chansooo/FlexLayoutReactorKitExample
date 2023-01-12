@@ -24,6 +24,15 @@ final class MovieListViewController: UIViewController, View {
     var disposeBag = DisposeBag()
     
     // MARK: Initializers
+    init(with reactor: MovieListReactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+        print(#function)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: Methods
     func bind(reactor: MovieListReactor) {
@@ -60,7 +69,7 @@ final class MovieListViewController: UIViewController, View {
 
         reactor.state
             .map { $0.shows }
-            .debug()
+//            .debug()
             .bind(to: self.mainView.showsTableView.rx.items(cellIdentifier: ShowTableViewCell.reuseIdentifier, cellType: ShowTableViewCell.self)) { index, model, cell in
                 cell.configure(show: model)
             }
@@ -71,7 +80,7 @@ final class MovieListViewController: UIViewController, View {
             .skip(1)
             .subscribe(onNext: { show in
                 let title = show.title
-                print(title)
+//                print(title)
                 let alert = UIAlertController(title: title, message: title, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "확인", style: .default))
                 self.mainView.didSelectShow(show: show)
