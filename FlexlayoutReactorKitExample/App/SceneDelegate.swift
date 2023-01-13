@@ -7,23 +7,52 @@
 
 import UIKit
 
+import RxSwift
+import RxFlow
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+//    var disposebag = DisposeBag()
+    private let coordinator: FlowCoordinator = .init()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene) // SceneDelegate의 프로퍼티에 설정해줌
+//        window = UIWindow(windowScene: windowScene)
+//        showFirstVC()
+//        showSecondVC()
+        coordinateToAppFlow(with: windowScene)
+    }
+    
+    private func coordinateToAppFlow(with scene: UIWindowScene){
+        let window = UIWindow(windowScene: scene)
+        self.window = window
         
-        let mainViewController = MainViewController() // 맨 처음 보여줄 ViewController
-        let reactor = MainReactor(fetchShowRepository: FetchShowRepositoryImpl())
-        mainViewController.reactor = reactor
+        let appFlow = AppFlow(with: window)
+        let appStepper = AppStepper()
         
-        window?.rootViewController = mainViewController
+        coordinator.coordinate(flow: appFlow, with: appStepper)
+        window.makeKeyAndVisible()
+    }
+    
+    private func showFirstVC() {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: windowScene)
+        
+        let reactor = NumberCountReactor(count: 1)
+        let numberListViewController = NumberCountViewController(with: reactor)
+        window?.rootViewController = numberListViewController
+        
         window?.makeKeyAndVisible()
+    }
+    
+    private func showSecondVC() {
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: windowScene)
+        let reactor = MovieListReactor(fetchShowRepository: FetchShowRepositoryImpl())
+        let mainViewController = MovieListViewController(with: reactor) // 맨 처음 보여줄 ViewController
+        window?.rootViewController = mainViewController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
