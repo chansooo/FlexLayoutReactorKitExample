@@ -1,5 +1,5 @@
 //
-//  MainReactor.swift
+//  MovieListReactor.swift
 //  FlexlayoutReactorKitExample
 //
 //  Created by kimchansoo on 2023/01/04.
@@ -35,7 +35,7 @@ final class MovieListReactor: Reactor, Stepper {
     var initialState: State
     private let fetchShowRepository: FetchShowRepository
     
-    var steps: PublishRelay<Step>
+    var steps = PublishRelay<Step>()
     
     // MARK: Initializers
     init(fetchShowRepository: FetchShowRepository) {
@@ -49,14 +49,13 @@ final class MovieListReactor: Reactor, Stepper {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .tableDidTab(let show):
-            return Observable.concat([
-                Observable.just(Mutation.setSelectedItem(show: show))
-            ])
+            steps.accept(MovieListStep.seriesPicked(show: show))
+            return Observable.just(Mutation.setSelectedItem(show: show))
         case .viewDidLoad:
             return Observable.concat([
                 self.fetchShows()
             ])
-            .debug()
+//            .debug()
         }
     }
     

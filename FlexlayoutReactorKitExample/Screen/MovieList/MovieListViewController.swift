@@ -79,12 +79,7 @@ final class MovieListViewController: UIViewController, View {
             .map { $0.selectedShow }
             .skip(1)
             .subscribe(onNext: { show in
-                let title = show.title
-//                print(title)
-                let alert = UIAlertController(title: title, message: title, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default))
                 self.mainView.didSelectShow(show: show)
-                self.present(alert, animated: true)
             })
             .disposed(by: disposeBag)
     }
