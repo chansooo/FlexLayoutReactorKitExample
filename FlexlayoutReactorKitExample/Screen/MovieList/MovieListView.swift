@@ -16,7 +16,11 @@ final class MovieListView: UIView {
     
     let episodeImageView = UIImageView()
     let summaryPopularityLabel = UILabel()
-    let episodeTitleLabel = UILabel()
+    private lazy var episodeTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray
+        return label
+    }()
     let descriptionLabel = UILabel()
     let showsTableView = ExpandedTableView()
     
@@ -123,9 +127,6 @@ final class MovieListView: UIView {
         contentView.addSubview(rootFlexContainer)
         
         addSubview(contentView)
-        
-//        didSelectShow(show: series.shows[0])
-//        showsTableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
     }
     
     required init?(coder: NSCoder) {
