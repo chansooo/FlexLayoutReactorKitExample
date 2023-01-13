@@ -21,8 +21,8 @@ final class NumberCountReactor: Reactor, Stepper {
     
     // reactor 내부 로직
     enum Mutation {
-        case showPrevView
-        case showNextView
+//        case increaseNumber
+//        case decreaseNumber
     }
     
     // 뷰에 보여줄 값
@@ -43,33 +43,33 @@ final class NumberCountReactor: Reactor, Stepper {
     // MARK: Methods
     
     func mutate(action: Action) -> Observable<Mutation> {
+        
         switch action {
         case .decrementButtonDidTab:
-//            if newCount < 0 {
-//                steps.accept(NumberCountStep.minusCountAlertRequired(message: "rootViewController입니다."))
-//                return .empty()
-//            }
-//            steps.accept(NumberCountStep.numberCountCompleted)
-            return Observable.just(Mutation.showPrevView)
-//            return .empty()
+            steps.accept(NumberCountStep.numberCountCompleted)
+            return .empty()
         case .incrementButtonDidTab:
             print("increment action")
-            return Observable.just(Mutation.showNextView)
-            
-//            steps.accept(NumberCountStep.nextNumberCountRequired(withCount: newCount))
-//            return .empty()
+            steps.accept(NumberCountStep.nextNumberCountRequired(withCount: self.currentState.count + 1))
+            return .empty()
         }
     }
     
-    func reduce(state: State, mutation: Mutation) -> State {
-        print("reduce")
-        var newState = state
-        switch mutation {
-        case .showPrevView:
-            newState.count -= 1
-        case .showNextView:
-            newState.count += 1
-        }
-        return newState
+//    func reduce(state: State, mutation: Mutation) -> State {
+//        print("reduce")
+//        var newState = state
+//        switch mutation {
+//        case .increaseNumber:
+//            newState.count += 1
+//        case .decreaseNumber:
+//            newState.count -= 1
+//        }
+//        return newState
+//    }
+    
+    private func showNextView(state: State) -> Observable<Mutation> {
+        steps.accept(NumberCountStep.nextNumberCountRequired(withCount: state.count + 1))
+        return Observable.empty()
     }
+    
 }
